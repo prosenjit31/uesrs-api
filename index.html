@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uesrs-api</title>
+    <style>
+        .cls{
+            color: brown;
+        }
+    </style>
+</head>
+<body>
+    
+    <input id="eliment-count" type="text">  <button id="load-eliment">Load Eliment</button>
+    
+        
+    <div id="uesrs">
+
+    </div>
+    <div id="element-datalis">
+
+    </div>
+    <script>
+        document.getElementById("load-eliment").addEventListener("click", function(){
+           const countText = document.getElementById("eliment-count").value;
+           const count = parseInt(countText);
+           fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res => res.json())
+        .then(data => {
+            data = data.slice(0, count)
+            const elementcontainer =  document.getElementById("uesrs")
+            elementcontainer.innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                const element = data[i];
+               const p = document.createElement("p");
+               p.innerHTML = `name:<p class="cls"> <strong> ${element.name} </strong> <button onclick="getElementByDatails(${element.id})" > details - ${element.id} </button> </p>`;
+               elementcontainer.appendChild(p);
+            }
+        })
+
+        })
+       
+        function getElementByDatails(elementId) {
+            fetch(`https://jsonplaceholder.typicode.com/users/${elementId}`)
+            .then(res => res.json())
+            .then(data => {
+                 const datali = document.getElementById("element-datalis");
+                 datali.innerHTML = `<h1>${data.name}</h1>
+                                     <h4>Email:${data.email}</h4>
+                                     <p>Phone: ${data.phone}</p>
+                                     `
+            })
+        }
+    </script>
+</body>
+</html>
